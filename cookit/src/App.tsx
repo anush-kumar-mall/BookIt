@@ -1,23 +1,29 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import MainPage from "./pages/mainPage";
+import SearchPage from "./pages/searchPage";
+import SelectDatePage from "./pages/selectDatePage";
+import SelectTimePage from "./pages/selectTime";
+import ConfirmationPage from "./pages/confirmationPage";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {/* Default route */}
+        <Route path="/" element={<MainPage />} />
+
+        {/* Other pages */}
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/date" element={<SelectDatePage />} />
+        <Route path="/time" element={<SelectTimePage />} />
+        <Route path="/confirm" element={<ConfirmationPage />} />
+
+
+      </Routes>
+    </Router>
   );
 }
 
