@@ -28,7 +28,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
     try {
       // ✅ fetch search results directly from backend
       const res = await axios.get(
-        `http://localhost:5000/api/experiences?search=${encodeURIComponent(trimmed)}`
+        `https://bookit-1-y1x6.onrender.com/api/experiences?search=${encodeURIComponent(trimmed)}`
       );
       setResults(res.data);
       setShowResults(true);

@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
   const fetchData = async (query = "") => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/experiences?search=${query}`
+        `https://bookit-1-y1x6.onrender.com/api/experiences?search=${query}`
       );
       setExperiences(res.data);
     } catch (err) {

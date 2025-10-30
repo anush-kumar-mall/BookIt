@@ -32,7 +32,7 @@ export default function SelectDatePage() {
   useEffect(() => {
     const fetchExperience = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/experiences/${id}`);
+        const res = await axios.get(`https://bookit-1-y1x6.onrender.com/api/experiences/${id}`);
         setExperience(res.data);
       } catch (err) {
         console.error("Error fetching experience:", err);
