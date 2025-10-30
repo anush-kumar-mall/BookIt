@@ -1,150 +1,172 @@
 import React, { useState } from "react";
-import Navbar from "../components/common/navbar"; 
+import Navbar from "../components/common/navbar";
 
-const SelectDatePage: React.FC = () => {
+export default function SelectDatePage() {
   const [quantity, setQuantity] = useState(1);
-  const price = 999;
-  const tax = 5;
-  const total = price * quantity + tax;
+  const [selectedDate, setSelectedDate] = useState("Oct 22");
+  const [selectedTime, setSelectedTime] = useState("");
 
-  const handleIncrease = () => setQuantity(quantity + 1);
-  const handleDecrease = () => quantity > 1 && setQuantity(quantity - 1);
+  const price = 999;
+  const tax = 59;
+  const subtotal = price * quantity;
+  const total = subtotal + tax;
 
   const dates = ["Oct 22", "Oct 23", "Oct 24", "Oct 25", "Oct 26"];
   const times = [
-    { time: "07:00 am", left: "4 left" },
-    { time: "09:30 am", left: "3 left" },
-    { time: "11:00 am", left: "5 left" },
-    { time: "03:00 pm", left: "3 left" },
-    { time: "05:00 pm", left: "Sold out" },
+    { time: "8:00 AM", left: 3 },
+    { time: "11:00 AM", left: 5 },
+    { time: "2:00 PM", left: 2 },
+    { time: "5:00 PM", left: 0 }, // Sold Out
   ];
 
+  const increaseQuantity = () => setQuantity(quantity + 1);
+  const decreaseQuantity = () => {
+    if (quantity > 1) setQuantity(quantity - 1);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 font-sans flex flex-col">
-      {/* ✅ Navbar at the top */}
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
 
-      {/* ✅ Main content */}
-      <main className="flex-grow max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 py-10">
-        {/* LEFT CONTENT */}
-        <div className="lg:col-span-2">
+      {/* Main Container */}
+      <div className="relative flex justify-start items-start">
+        {/* Left Section */}
+        <div className="relative mt-[50px] ml-[100px]">
           <img
-            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80"
+            src="/images/kayaking.jpg"
             alt="Kayaking"
-            className="rounded-xl w-full h-80 object-cover shadow-sm"
+            className="rounded-2xl w-[650px] h-[310px] object-cover shadow-md transition-transform duration-300 hover:scale-105"
           />
 
-          <h2 className="text-2xl font-semibold mt-6 mb-1">Kayaking</h2>
-          <p className="text-sm text-gray-700 border border-gray-200 p-3 rounded-md mb-6">
-            Curated small-group experience. Certified guide. Safety first with
-            gear included. Helmet and Life jackets along with an expert will
-            accompany in kayaking.
-          </p>
-
-          {/* Choose date */}
-          <div className="mb-6">
-            <h3 className="font-semibold mb-2 text-gray-800">Choose date</h3>
-            <div className="flex flex-wrap gap-2">
-              {dates.map((d, i) => (
-                <button
-                  key={i}
-                  className={`px-4 py-2 text-sm rounded-md border transition ${
-                    i === 0
-                      ? "bg-yellow-200 border-yellow-400 font-medium"
-                      : "border-gray-300 bg-white hover:bg-gray-100"
-                  }`}
-                >
-                  {d}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Choose time */}
-          <div className="mb-6">
-            <h3 className="font-semibold mb-2 text-gray-800">Choose time</h3>
-            <p className="text-xs text-gray-500 mb-3">
-              All dates in IST (GMT +5:30)
+          {/* Bottom Section (Under Image) */}
+          <div className="mt-6 w-[650px]">
+            <h2 className="text-xl font-semibold mb-2">Kayaking Adventure</h2>
+            <p className="text-gray-600 text-sm mb-4">
+              Curated small-group experience. Certified guide. Safety first with gear included. Helmet and Life jackets along with an expert will accompany in kayaking.
             </p>
-            <div className="flex flex-wrap gap-2">
-              {times.map((t, i) => (
-                <button
-                  key={i}
-                  disabled={t.left === "Sold out"}
-                  className={`px-4 py-2 text-sm rounded-md border flex flex-col items-center ${
-                    t.left === "Sold out"
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-white hover:bg-gray-100 border-gray-300"
-                  }`}
-                >
-                  <span>{t.time}</span>
-                  <span className="text-xs text-gray-400">{t.left}</span>
-                </button>
-              ))}
-            </div>
-          </div>
 
-          {/* About section */}
-          <div className="mb-6">
-            <h3 className="font-semibold text-gray-800 mb-2">About</h3>
-            <p className="text-sm text-gray-600 border border-gray-200 rounded-md p-3">
-              Scenic routes, trained guides, and safety briefing. Minimum age:
-              10.
-            </p>
+            {/* Choose Date */}
+            <div className="mb-4">
+              <h3 className="font-semibold text-gray-800 mb-2">Choose Date</h3>
+              <div className="flex gap-3">
+                {dates.map((date) => (
+                  <button
+                    key={date}
+                    onClick={() => setSelectedDate(date)}
+                    className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all ${
+                      selectedDate === date
+                        ? "bg-[#FFD643] border-[#FFD643]"
+                        : "bg-white border-gray-300 hover:bg-gray-100"
+                    }`}
+                  >
+                    {date}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Choose Time */}
+            <div className="mb-2">
+              <h3 className="font-semibold text-gray-800 mb-2">Choose Time</h3>
+              <div className="grid grid-cols-4 gap-3">
+                {times.map((t) => {
+                  const isSoldOut = t.left === 0;
+                  return (
+                    <button
+                      key={t.time}
+                      onClick={() =>
+                        !isSoldOut ? setSelectedTime(t.time) : null
+                      }
+                      disabled={isSoldOut}
+                      className={`p-2 rounded-lg border text-sm font-medium flex flex-col items-center justify-center transition-all ${
+                        isSoldOut
+                          ? "bg-[#6A6A6A] border-[#6A6A6A] text-white cursor-not-allowed"
+                          : selectedTime === t.time
+                          ? "bg-[#FFD643] border-[#FFD643]"
+                          : "bg-white border-gray-300 hover:bg-gray-100"
+                      }`}
+                    >
+                      <span>{t.time}</span>
+                      <span
+                        className={`text-xs ${
+                          isSoldOut
+                            ? "text-white font-medium"
+                            : "text-gray-500"
+                        }`}
+                      >
+                        {isSoldOut ? "Sold Out" : `${t.left} left`}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                *All times are in IST (GMT +5:30)
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* RIGHT BOOKING SUMMARY */}
-        <div className="bg-white border border-gray-200 rounded-xl shadow-md p-5 h-fit sticky top-24">
-          <div className="flex justify-between text-sm text-gray-600 mb-2">
-            <span>Starts at</span>
-            <span className="font-medium text-black">₹{price}</span>
-          </div>
+        {/* Right Section */}
+        <div className="absolute top-[50px] left-[800px] bg-[#EFEFEF] rounded-2xl w-[350px] h-[250px] shadow-lg p-4 flex flex-col justify-between">
+          {/* Top Title */}
+          <h2 className="text-lg font-semibold text-center mb-1">
+            Booking Details
+          </h2>
 
-          {/* Quantity selector */}
-          <div className="flex justify-between items-center text-sm text-gray-600 mb-3">
-            <span>Quantity</span>
-            <div className="flex items-center border rounded-md">
-              <button
-                onClick={handleDecrease}
-                className="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200"
-              >
-                -
-              </button>
-              <span className="px-4">{quantity}</span>
-              <button
-                onClick={handleIncrease}
-                className="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200"
-              >
-                +
-              </button>
+          {/* Details Section */}
+          <div className="flex-1 flex flex-col justify-evenly text-sm">
+            {/* Row 1 */}
+            <div className="flex justify-between">
+              <span className="text-gray-600 font-medium">Starts at</span>
+              <span className="text-gray-800 font-semibold">₹{price}</span>
+            </div>
+
+            {/* Row 2 */}
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600 font-medium">Quantity</span>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={decreaseQuantity}
+                  className="w-6 h-6 flex justify-center items-center bg-gray-300 rounded-full text-sm font-bold"
+                >
+                  −
+                </button>
+                <span className="text-gray-800 font-semibold">{quantity}</span>
+                <button
+                  onClick={increaseQuantity}
+                  className="w-6 h-6 flex justify-center items-center bg-gray-300 rounded-full text-sm font-bold"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {/* Row 3 */}
+            <div className="flex justify-between">
+              <span className="text-gray-600 font-medium">Subtotal</span>
+              <span className="text-gray-800 font-semibold">₹{subtotal}</span>
+            </div>
+
+            {/* Row 4 */}
+            <div className="flex justify-between">
+              <span className="text-gray-600 font-medium">Taxes</span>
+              <span className="text-gray-800 font-semibold">₹{tax}</span>
+            </div>
+
+            {/* Row 5 */}
+            <div className="flex justify-between border-t border-gray-300 pt-1">
+              <span className="text-gray-900 font-bold">Total</span>
+              <span className="text-gray-900 font-bold">₹{total}</span>
             </div>
           </div>
 
-          <div className="flex justify-between text-sm text-gray-600 mb-1">
-            <span>Subtotal</span>
-            <span>₹{price * quantity}</span>
-          </div>
-
-          <div className="flex justify-between text-sm text-gray-600 mb-3">
-            <span>Taxes</span>
-            <span>₹{tax}</span>
-          </div>
-
-          <hr className="my-3" />
-
-          <div className="flex justify-between items-center text-base font-semibold text-gray-800 mb-4">
-            <span>Total</span>
-            <span>₹{total}</span>
-          </div>
-
-          <button className="w-full py-2 bg-gray-200 text-gray-600 rounded-md font-semibold cursor-not-allowed">
+          {/* Bottom Button */}
+          <button className="w-full bg-[#D7D7D7] text-black font-medium py-1 rounded-lg hover:bg-gray-300 transition-all text-sm">
             Confirm
           </button>
         </div>
-      </main>
+      </div>
     </div>
   );
-};
-
-export default SelectDatePage;
+}

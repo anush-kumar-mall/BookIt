@@ -1,23 +1,30 @@
 import React from "react";
-import Navbar from "../components/common/navbar"; 
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/common/navbar";
 
 const ConfirmationPage: React.FC = () => {
-  return (
-    <div className="min-h-screen flex flex-col bg-white">
-      {/* ✅ Navbar at the top */}
-      <Navbar />
+  const navigate = useNavigate();
 
-      {/* ✅ Main content centered */}
-      <div className="flex flex-col items-center justify-center flex-grow text-center">
-        <h1 className="text-xl font-semibold text-gray-800 mb-1">
+  const handleBack = () => {
+    navigate("/");
+  };
+
+  return (
+    <div>
+      <Navbar />
+      <div className="flex flex-col justify-center items-center h-screen text-center bg-gray-100 font-[Poppins] transform -translate-y-36">
+        <img
+          src="/images/tick.png"
+          alt="Success Tick"
+          className="w-24 h-24 mb-5"
+        />
+        <h1 className="text-2xl font-semibold text-gray-800 mb-2">
           Booking Confirmed
         </h1>
-
-        <p className="text-gray-500 text-sm mb-6">Ref ID: HUF56&SO</p>
-
+        <p className="text-base text-gray-600 mb-5">Ref ID: #HUF56&SO</p>
         <button
-          className="bg-gray-200 text-gray-700 text-sm font-medium px-4 py-1.5 rounded hover:bg-gray-300 transition"
-          onClick={() => (window.location.href = "/")}
+          className="bg-gray-300 text-white px-5 py-2 rounded-lg text-base cursor-pointer transition-colors duration-300 hover:bg-blue-800"
+          onClick={handleBack}
         >
           Back to Home
         </button>

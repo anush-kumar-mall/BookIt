@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  onSearch?: (query: string) => void; // ✅ optional
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
+  const [query, setQuery] = useState("");
+
+  const handleSearch = () => {
+    const trimmed = query.trim();
+    if (trimmed && onSearch) {
+      onSearch(trimmed);
+    }
+  };
+
   return (
     <nav
       style={{
@@ -18,12 +31,9 @@ const Navbar: React.FC = () => {
       {/* Left: Logo */}
       <div style={{ display: "flex", alignItems: "center" }}>
         <img
-          src="https://highwaydelite.com/assets/images/highwaydeliteLogo.png"
-          alt="Highway Delite"
-          style={{
-            height: "35px",
-            width: "auto",
-          }}
+          src="/images/logo.png" // ✅ direct path (no import)
+          alt="Cookit Logo"
+          style={{ height: "35px", width: "auto" }}
         />
       </div>
 
@@ -41,6 +51,9 @@ const Navbar: React.FC = () => {
         <input
           type="text"
           placeholder="Search experiences"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           style={{
             padding: "8px 12px",
             border: "none",
@@ -51,6 +64,7 @@ const Navbar: React.FC = () => {
           }}
         />
         <button
+          onClick={handleSearch}
           style={{
             backgroundColor: "#FFD500",
             border: "none",
