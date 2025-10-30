@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import MainPage from "./pages/mainPage";
 import SelectDatePage from "./pages/selectDatePage";
-import SelectTimePage from "./pages/selectTimePage";
+import CheckoutPage from "./pages/checkoutPage";
 import ConfirmationPage from "./pages/confirmationPage";
 
 
@@ -16,7 +16,7 @@ function App() {
 
         {/* Other pages */}
         <Route path="/date" element={<SelectDatePage />} />
-        <Route path="/time" element={<SelectTimePage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/confirm" element={<ConfirmationPage />} />
 
 

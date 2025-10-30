@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../common/navbar"; // ✅ apne path ke hisaab se
+import Navbar from "../common/navbar";
 
 interface Experience {
   _id: string;
@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchData(); // initial load
+    fetchData();
   }, []);
 
   const handleSearch = (query: string) => {
@@ -34,26 +34,34 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#fafafa", minHeight: "100vh" }}>
       <Navbar onSearch={handleSearch} />
 
-      <div style={{ padding: "30px 60px" }}>
+      <div style={{ padding: "40px 60px" }}>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "24px",
+            gridTemplateColumns: "repeat(4, 1fr)", // ✅ exactly 4 per row
+            gap: "28px",
           }}
         >
           {experiences.map((exp) => (
             <div
               key={exp._id}
               style={{
-                border: "1px solid #ddd",
                 borderRadius: "10px",
                 overflow: "hidden",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                boxShadow: "0 3px 10px rgba(0,0,0,0.1)",
+                backgroundColor: "#fff",
+                transition: "transform 0.2s ease",
+                cursor: "pointer",
               }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.transform = "translateY(-5px)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.transform = "translateY(0)")
+              }
             >
               <img
                 src={process.env.PUBLIC_URL + exp.image}
@@ -64,12 +72,80 @@ const HomePage: React.FC = () => {
                   objectFit: "cover",
                 }}
               />
-              <div style={{ padding: "12px" }}>
-                <h3 style={{ marginBottom: "6px" }}>{exp.title}</h3>
-                {exp.location && <p style={{ margin: 0 }}>{exp.location}</p>}
-                <p style={{ fontWeight: "bold", marginTop: "8px" }}>
-                  From ₹{exp.price}
+
+              <div style={{ padding: "16px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <h3 style={{ margin: 0, fontSize: "18px" }}>{exp.title}</h3>
+
+                  {exp.location && (
+                    <span
+                      style={{
+                        backgroundColor: "#eee",
+                        color: "#333",
+                        borderRadius: "6px",
+                        fontSize: "12px",
+                        padding: "3px 8px",
+                      }}
+                    >
+                      {exp.location}
+                    </span>
+                  )}
+                </div>
+
+                <p
+                  style={{
+                    color: "#666",
+                    marginTop: "10px",
+                    fontSize: "14px",
+                    minHeight: "42px",
+                  }}
+                >
+                  {exp.description.length > 70
+                    ? exp.description.slice(0, 70) + "..."
+                    : exp.description}
                 </p>
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: "15px",
+                  }}
+                >
+                  <p style={{ margin: 0, fontWeight: "bold", color: "#333" }}>
+                    From ₹{exp.price}
+                  </p>
+
+                  <button
+                    style={{
+                      backgroundColor: "#FFD814",
+                      border: "none",
+                      borderRadius: "6px",
+                      padding: "8px 16px",
+                      cursor: "pointer",
+                      fontWeight: 600,
+                      transition: "0.2s",
+                    }}
+                    onClick={() =>
+                      (window.location.href = `/experience/${exp._id}`)
+                    }
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#F7CA00")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#FFD814")
+                    }
+                  >
+                    View Details
+                  </button>
+                </div>
               </div>
             </div>
           ))}
