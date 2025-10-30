@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../common/navbar";
 
 interface Experience {
@@ -13,6 +14,7 @@ interface Experience {
 
 const HomePage: React.FC = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
+  const navigate = useNavigate();
 
   const fetchData = async (query = "") => {
     try {
@@ -37,11 +39,16 @@ const HomePage: React.FC = () => {
     <div style={{ backgroundColor: "#fafafa", minHeight: "100vh" }}>
       <Navbar onSearch={handleSearch} />
 
-      <div style={{ padding: "40px 60px" }}>
+      <div
+        style={{
+          padding: "40px 60px",
+        }}
+      >
+        {/* ✅ Responsive grid container */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)", // ✅ exactly 4 per row
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
             gap: "28px",
           }}
         >
@@ -133,9 +140,7 @@ const HomePage: React.FC = () => {
                       fontWeight: 600,
                       transition: "0.2s",
                     }}
-                    onClick={() =>
-                      (window.location.href = `/experience/${exp._id}`)
-                    }
+                    onClick={() => navigate(`/experience/${exp._id}`)}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.backgroundColor = "#F7CA00")
                     }
@@ -151,6 +156,22 @@ const HomePage: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* ✅ Extra responsive styling (mobile padding fix) */}
+      <style>
+        {`
+          @media (max-width: 1024px) {
+            div[style*="padding: 40px 60px"] {
+              padding: 30px 40px !important;
+            }
+          }
+          @media (max-width: 768px) {
+            div[style*="padding: 40px 60px"] {
+              padding: 20px 20px !important;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-// routes/experienceRoutes.js
 const express = require("express");
 const router = express.Router();
 const Experience = require("../models/Experience");
@@ -13,6 +12,19 @@ router.get("/", async (req, res) => {
 
     const experiences = await Experience.find(filter);
     res.json(experiences);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// ✅ GET single experience by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const experience = await Experience.findById(req.params.id);
+    if (!experience)
+      return res.status(404).json({ message: "Experience not found" });
+
+    res.json(experience);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
