@@ -41,7 +41,8 @@ export default function DetailsContainer({
   handleConfirm,
 }: DetailsContainerProps) {
   return (
-    <div className="flex flex-col lg:flex-row justify-start items-start px-6 sm:px-10 md:px-16 lg:px-[100px] py-8 sm:py-10 lg:py-[50px] space-y-10 lg:space-y-0 lg:space-x-10">
+    <div className="flex flex-col lg:flex-row justify-start items-start px-6 sm:px-10 md:px-16 lg:px-[100px] py-8 sm:py-10 lg:py-[50px] space-y-10 lg:space-y-0">
+      
       <ExperienceDetails
         experience={experience}
         selectedDate={selectedDate}
@@ -50,16 +51,19 @@ export default function DetailsContainer({
         setSelectedTime={setSelectedTime}
       />
 
-      <BookingSummary
-        experience={experience}
-        quantity={quantity}
-        increaseQuantity={increaseQuantity}
-        decreaseQuantity={decreaseQuantity}
-        subtotal={subtotal}
-        tax={tax}
-        total={total}
-        onConfirm={handleConfirm}
-      />
+      {/* 👇 Added a wrapper to shift BookingSummary to the right */}
+      <div className="lg:ml-10 xl:ml-16 w-full lg:w-auto">
+        <BookingSummary
+          experience={experience}
+          quantity={quantity}
+          increaseQuantity={increaseQuantity}
+          decreaseQuantity={decreaseQuantity}
+          subtotal={subtotal}
+          tax={tax}
+          total={total}
+          onConfirm={handleConfirm}
+        />
+      </div>
     </div>
   );
 }

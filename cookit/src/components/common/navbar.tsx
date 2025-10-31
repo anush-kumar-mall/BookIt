@@ -1,52 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-interface Experience {
-  _id: string;
-  title: string;
-  description: string;
-  image: string;
-  price: number;
-  location: string;
-}
 
 interface NavbarProps {
-  onSearch?: (query: string) => void; // optional, for homepage use
+  onSearch?: (query: string) => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Experience[]>([]);
-  const [showResults, setShowResults] = useState(false);
   const navigate = useNavigate();
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
     const trimmed = query.trim();
     if (!trimmed) return;
-
-    try {
-      // ✅ fetch search results directly from backend
-      const res = await axios.get(
-        `https://bookit-1-y1x6.onrender.com/api/experiences?search=${encodeURIComponent(trimmed)}`
-      );
-      setResults(res.data);
-      setShowResults(true);
-    } catch (err) {
-      console.error("Error fetching search results:", err);
+    if (onSearch) {
+      onSearch(trimmed);
+    } else {
+      navigate(`/?search=${encodeURIComponent(trimmed)}`);
     }
-  };
-
-  const handleResultClick = (id: string) => {
-    setShowResults(false);
-    setQuery("");
-    navigate(`/experience/${id}`);
   };
 
   return (
     <div style={{ position: "relative" }}>
-      {/* NAVBAR */}
       <nav
+        className="navbar"
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -57,22 +33,35 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
           position: "sticky",
           top: 0,
           zIndex: 1000,
+          flexWrap: "wrap",
         }}
       >
         {/* Left: Logo */}
         <div
-          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            cursor: "pointer",
+            flexShrink: 0,
+          }}
           onClick={() => navigate("/")}
         >
           <img
             src="/images/logo.png"
             alt="Cookit Logo"
-            style={{ height: "35px", width: "auto" , marginLeft: "35px" }}
+            style={{
+              height: "55px",
+              width: "auto",
+              marginLeft: "35px",
+              transition: "all 0.3s ease",
+            }}
+            className="navbar-logo"
           />
         </div>
 
         {/* Right: Search bar */}
         <div
+          className="navbar-search"
           style={{
             display: "flex",
             alignItems: "center",
@@ -80,7 +69,8 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
             borderRadius: "6px",
             overflow: "hidden",
             backgroundColor: "#f9f9f9",
-            marginRight: "45px"
+            marginRight: "45px",
+            transition: "all 0.3s ease",
           }}
         >
           <input
@@ -115,77 +105,74 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
         </div>
       </nav>
 
-      {/* ✅ Search Results Dropdown */}
-      {showResults && results.length > 0 && (
-        <div
-          style={{
-            position: "absolute",
-            top: "60px",
-            right: "40px",
-            width: "300px",
-            backgroundColor: "#fff",
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-            zIndex: 1001,
-            maxHeight: "400px",
-            overflowY: "auto",
-          }}
-        >
-          {results.map((item) => (
-            <div
-              key={item._id}
-              onClick={() => handleResultClick(item._id)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "10px",
-                borderBottom: "1px solid #eee",
-                cursor: "pointer",
-                transition: "background-color 0.2s",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget.style.backgroundColor = "#f9f9f9"))
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget.style.backgroundColor = "white"))
-              }
-            >
-              <img
-                src={item.image}
-                alt={item.title}
-                style={{
-                  width: "50px",
-                  height: "50px",
-                  borderRadius: "6px",
-                  objectFit: "cover",
-                  marginRight: "10px",
-                }}
-              />
-              <div>
-                <p
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: 500,
-                    color: "#333",
-                    marginBottom: "2px",
-                  }}
-                >
-                  {item.title}
-                </p>
-                <p
-                  style={{
-                    fontSize: "12px",
-                    color: "#666",
-                  }}
-                >
-                  ₹{item.price} • {item.location}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      {/* ✅ Responsive fixes */}
+      <style>
+        {`
+          /* Medium screens */
+          @media (max-width: 768px) {
+            .navbar-logo {
+              margin-left: 20px !important;
+              height: 32px !important;
+            }
+
+            .navbar-search {
+              margin-right: 20px !important;
+            }
+          }
+
+          /* Small screens */
+          @media (max-width: 550px) {
+            .navbar {
+              flex-direction: column !important;
+              align-items: center !important;
+              padding: 12px 20px !important;
+            }
+
+            .navbar-logo {
+              margin-left: 0 !important;
+              margin-bottom: 10px !important;
+              height: 30px !important;
+            }
+
+            .navbar-search {
+              margin: 0 !important;
+              width: 100% !important;
+              max-width: 90% !important;
+              justify-content: space-between !important;
+            }
+
+            .navbar-search input {
+              width: 100% !important;
+              font-size: 13px !important;
+            }
+
+            .navbar-search button {
+              padding: 8px 12px !important;
+              font-size: 13px !important;
+              white-space: nowrap !important;
+            }
+          }
+
+          /* Extra small screens */
+          @media (max-width: 400px) {
+            .navbar-search {
+              flex-direction: column !important;
+              align-items: stretch !important;
+              border-radius: 8px !important;
+            }
+
+            .navbar-search input {
+              width: 100% !important;
+              border-bottom: 1px solid #dcdcdc !important;
+            }
+
+            .navbar-search button {
+              width: 100% !important;
+              margin-top: 5px !important;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };

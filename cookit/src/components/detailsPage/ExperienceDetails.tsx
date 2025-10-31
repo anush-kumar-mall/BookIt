@@ -24,7 +24,13 @@ export default function ExperienceDetails({
   setSelectedDate,
   setSelectedTime,
 }: ExperienceDetailsProps) {
-  const dates = ["Oct 22", "Oct 23", "Oct 24", "Oct 25", "Oct 26"];
+  // ✅ Generate next 5 days dynamically (starting from tomorrow)
+  const dates = Array.from({ length: 5 }, (_, i) => {
+    const date = new Date();
+    date.setDate(date.getDate() + i + 1); // start from tomorrow
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  });
+
   const times = [
     { time: "8:00 AM", left: 3 },
     { time: "11:00 AM", left: 5 },

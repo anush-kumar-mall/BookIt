@@ -21,16 +21,15 @@ export default function CheckoutContainer() {
 
   useEffect(() => {
     const date = new Date();
-    const formattedDate = date.toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
+
+    // ✅ Convert to YYYY-MM-DD format
+    const formattedDate = date.toISOString().split("T")[0];
+
     const formattedTime = date.toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
     });
+
     setCurrentDate(formattedDate);
     setCurrentTime(formattedTime);
   }, []);

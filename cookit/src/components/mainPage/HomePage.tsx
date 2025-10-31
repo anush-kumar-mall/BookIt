@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../common/Navbar";
 
 interface Experience {
@@ -15,7 +15,13 @@ interface Experience {
 const HomePage: React.FC = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
+  // ✅ Extract query from URL (so search works when redirected)
+  const queryParams = new URLSearchParams(location.search);
+  const searchQuery = queryParams.get("search") || "";
+
+  // ✅ Fetch data function
   const fetchData = async (query = "") => {
     try {
       const res = await axios.get(
@@ -27,24 +33,21 @@ const HomePage: React.FC = () => {
     }
   };
 
+  // ✅ Fetch when searchQuery changes
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(searchQuery);
+  }, [searchQuery]);
 
+  // ✅ Navbar search handler — updates URL to trigger fetch
   const handleSearch = (query: string) => {
-    fetchData(query);
+    navigate(`/?search=${encodeURIComponent(query)}`);
   };
 
   return (
     <div style={{ backgroundColor: "#fafafa", minHeight: "100vh" }}>
       <Navbar onSearch={handleSearch} />
 
-      <div
-        style={{
-          padding: "40px 60px",
-        }}
-      >
-        {/* ✅ Responsive grid container */}
+      <div style={{ padding: "40px 60px" }}>
         <div
           style={{
             display: "grid",
@@ -157,7 +160,7 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* ✅ Extra responsive styling (mobile padding fix) */}
+      {/* ✅ Responsive padding fix */}
       <style>
         {`
           @media (max-width: 1024px) {
