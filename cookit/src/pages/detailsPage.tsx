@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/common/Navbar";
+import Navbar from "../components/common/navbar";
 import ErrorModal from "../components/detailsPage/ErrorModal";
 import DetailsContainer from "../components/detailsPage/DetailsContainer";
 import useDetailsPage from "../hooks/useDetailsPage";

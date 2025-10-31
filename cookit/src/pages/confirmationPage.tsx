@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Navbar from "../components/common/Navbar";
+import Navbar from "../components/common/navbar";
 
 const ConfirmationPage: React.FC = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/common/Navbar";
+import Navbar from "../components/common/navbar";
 import CheckoutContainer from "../components/checkoutPage/CheckoutContainer";
 
 export default function CheckoutPage() {

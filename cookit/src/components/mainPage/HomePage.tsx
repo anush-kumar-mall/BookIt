@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import Navbar from "../common/Navbar";
+import Navbar from "../common/navbar";
 
 interface Experience {
   _id: string;
